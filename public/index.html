@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Post Delivery Fitouts</title>
+    <meta charset="utf-8" />
+    <link
+      rel="shortcut icon"
+      href="https://img.icons8.com/color/32/null/holding-box.png"
+    />
+    <!-- External Libraries -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.7/themes/default/style.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/style.min.css"
+    />
+
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.3.7/jstree.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+    <script src="https://developer.api.autodesk.com/modelderivative/v2/viewers/7.*/viewer3D.min.js"></script>
+
+    <!-- Project-specific Files -->
+    <link href="css/main.css" rel="stylesheet" />
+    <script src="js/ForgeTree.js"></script>
+    <script src="js/dashboard/DashboardPanel.js"></script>
+    <script src="js/dashboard/PanelBarChart.js"></script>
+    <script src="js/dashboard/PanelPieChart.js"></script>
+    <script src="js/dashboard/Dashboard.js"></script>
+    <script src="js/ForgeViewer.js"></script>
+    <script src="js/Charts/ModelData.js"></script>
+    <script src="js/PowerBI.js"></script>
+    <script src="js/Charts/Auxiliary.js"></script>
+    <script src="js/extension.js"></script>
+    <script src="js/Charts/BarChart.js"></script>
+    <script src="js/Charts/universalBarChart.js"></script>
+    <script src="js/Charts/DataGridTable.js"></script>
+    <script src="js/Charts/DataGridDoorList.js"></script>
+    <script src="js/Charts/UnitsCFM.js"></script>
+    <script src="js/Charts/BarChartGrouped.js"></script>
+    <script src="js/Charts/BarChartInstallation.js"></script>
+    <script src="js/Charts/LineChart.js"></script>
+    <script src="js/Charts/DoughnutChart.js"></script>
+    <script src="js/Charts/PolarAreaChart.js"></script>
+    <script src="js/Charts/DashboardSpace.js"></script>
+    <!-- Custom CSS -->
+    <style>
+      /* Sliding Panel styles */
+      .sliding-panel {
+        position: fixed;
+        top: 0;
+        right: -600px; /* Initially hidden off-screen */
+        width: 600px;
+        height: 100%;
+        background-color: white;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+        transition: right 0.3s ease; /* Smooth transition */
+        z-index: 1000; /* Ensure it is above other content */
+        overflow-y: auto; /* Allow scrolling if content is too long */
+      }
+
+      .sliding-panel-content {
+        padding: 20px;
+      }
+
+      .open-panel-btn {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1100; /* Above the panel to remain clickable */
+        background-color: #033025; /* Bright orange color */
+        color: white;
+        font-weight: bold;
+        padding: 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      .open-panel-btn:hover {
+        background-color: #ff5722; /* Slightly darker shade for hover effect */
+      }
+
+      .close-btn {
+        background-color: #004434;
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: block;
+        width: 100%;
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .close-btn:hover {
+        background-color: #005944;
+      }
+
+      .resizer {
+        width: 10px;
+        height: 100%;
+        background: #ccc;
+        cursor: ew-resize;
+        position: absolute;
+        top: 0;
+        left: -5px;
+        z-index: 1001; /* Above the panel */
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Fixed navbar by Bootstrap: https://getbootstrap.com/examples/navbar-fixed-top/ -->
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container-fluid">
+        <div style="background-color: #004434; overflow: hidden">
+          <ul class="nav navbar-nav left">
+            <li>
+              <a href="https://tidhar.co.il/" target="_blank">
+                <img alt="Tidhar" src="../css/logoTidhar.png" height="30" />
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- End of navbar -->
+    <div class="container-fluid fill">
+      <div class="row fill">
+        <div class="col-sm-4 fill">
+          <div class="panel panel-default fill">
+            <div
+              class="panel-heading"
+              data-toggle="tooltip"
+              style="padding: 0px"
+            >
+              <span id="userInfo"></span>
+              <span
+                id="refreshHubs"
+                class="glyphicon glyphicon-refresh"
+                style="cursor: pointer; display: none"
+                title="Refresh list of files"
+              ></span>
+              <span
+                id="signOut"
+                class="glyphicon glyphicon-log-out"
+                style="
+                  margin-top: 5px;
+                  cursor: pointer;
+                  float: right;
+                  display: none;
+                "
+                title="Sign out"
+              ></span>
+            </div>
+            <div id="userHubs">
+              <div style="padding-top: 100px; text-align: center">
+                <button
+                  class="btn btn-lg btn-default"
+                  id="autodeskSigninButton"
+                >
+                  <img
+                    src="https://github.com/Autodesk-Forge/learn.forge.viewhubmodels/raw/master/img/autodesk_text.png"
+                    height="20"
+                  />
+                  Sign in
+                </button>
+                <br />
+                <br />
+                <br />
+                You may also need to provision your<br />
+                BIM 360 Docs account for this app.<br />
+                <a
+                  href="https://forge.autodesk.com/blog/bim-360-docs-provisioning-forge-apps"
+                  >Learn more</a
+                >.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-8 fill">
+          <div id="forgeViewer"></div>
+
+          <!-- Your existing content here -->
+          <div class="row" id="main-container">
+            <div class="col fill">
+              <div class="viewerContainer">
+                <div id="forgeViewer"></div>
+              </div>
+              <p id="model-name"></p>
+            </div>
+          </div>
+          <!-- Existing Modal if any -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+      <!-- Button to open the sliding panel -->
+      <button class="open-panel-btn" id="openPanelBtn">Open Panel</button>
+
+      <!-- Sliding panel structure -->
+      <div class="sliding-panel" id="mySlidingPanel">
+        <div class="resizer" id="resizer"></div>
+        <div class="sliding-panel-content">
+          <p>This is the content of the sliding panel.</p>
+          <button class="close-btn" id="closePanelBtn">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="container"></div>
+    <br />
+    <div></div>
+
+    <!-- JavaScript for toggling the sliding panel -->
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const openPanelBtn = document.getElementById("openPanelBtn");
+        const closePanelBtn = document.getElementById("closePanelBtn");
+        const slidingPanel = document.getElementById("mySlidingPanel");
+        const resizer = document.getElementById("resizer");
+
+        openPanelBtn.addEventListener("click", () => {
+          slidingPanel.style.right = "0";
+        });
+
+        closePanelBtn.addEventListener("click", () => {
+          slidingPanel.style.right = "-600px";
+        });
+
+        let isResizing = false;
+
+        resizer.addEventListener("mousedown", (e) => {
+          isResizing = true;
+          document.body.style.cursor = "ew-resize";
+        });
+
+        document.addEventListener("mousemove", (e) => {
+          if (!isResizing) return;
+
+          const newWidth = window.innerWidth - e.clientX;
+          if (newWidth > 200 && newWidth < window.innerWidth - 50) {
+            // Minimum and maximum width
+            slidingPanel.style.width = `${newWidth}px`;
+            slidingPanel.style.right = "0";
+          }
+        });
+
+        document.addEventListener("mouseup", () => {
+          if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = "default";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
