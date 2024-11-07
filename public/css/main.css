@@ -442,9 +442,40 @@ body {
   text-align: center;
   margin-top: 20px;
 }
-
 .close-btn:hover {
-  background-color: #005944;
+  background-color: #e73f64; /* Slightly brighter shade */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 255, 128, 0.6); /* Glowing effect */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.close-btn:active {
+  background-color: #e73f64; /* Darker shade when pressed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly reduced shadow when pressed */
+  transform: translateY(1px); /* Slight sink when pressed */
+}
+.export-btn {
+  background-color: #1b2e29;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.export-btn:hover {
+  background-color: #04f7e2; /* Slightly brighter shade */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3), 0 0 10px rgba(0, 255, 128, 0.6); /* Glowing effect */
+  transform: translateY(-2px); /* Slight lift on hover */
+}
+
+.export-btn:active {
+  background-color: #04f7e2; /* Darker shade when pressed */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Slightly reduced shadow when pressed */
+  transform: translateY(1px); /* Slight sink when pressed */
 }
 
 .resizer {

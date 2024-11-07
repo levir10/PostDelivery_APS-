@@ -72,7 +72,9 @@
         </div>
       </div>
       <!-- Button to open the sliding panel -->
-      <button class="open-panel-btn" id="openPanelBtn">פתח חלון נתונים</button>
+      <button class="open-panel-btn" id="openPanelBtn" hidden>
+        פתח חלון נתונים
+      </button>
     </nav>
     <!-- End of navbar -->
     <div class="container-fluid fill">
@@ -168,6 +170,7 @@
         <div class="sliding-panel-content">
           <p>This is the content of the sliding panel.</p>
           <button class="close-btn" id="closePanelBtn">Close</button>
+          <button class="export-btn" id="exportBtn">Export</button>
         </div>
       </div>
     </div>
@@ -176,11 +179,14 @@
     <br />
     <div></div>
 
+    <!-- Include XLSX library from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
     <!-- JavaScript for toggling the sliding panel 07.10.24-->
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const openPanelBtn = document.getElementById("openPanelBtn");
         const closePanelBtn = document.getElementById("closePanelBtn");
+        const exportBtm = document.getElementById("exportBtn");
         const slidingPanel = document.getElementById("mySlidingPanel");
         const resizer = document.getElementById("resizer");
 
@@ -214,8 +220,62 @@
           }
         });
 
-        let isResizing = false;
+        exportBtm.addEventListener("click", () => {
+          // Create a new workbook
+          const workbook = XLSX.utils.book_new();
 
+          // Convert Wall AREAS into a worksheet
+          const wallAreaWorksheet = XLSX.utils.json_to_sheet(modData.walls[0]);
+          // Convert Wall LENGTH into a worksheet
+          const wallLengthWorksheet = XLSX.utils.json_to_sheet(
+            modData.walls[1]
+          );
+          // Convert Floor AREA into a worksheet
+          const floorAreaWorksheet = XLSX.utils.json_to_sheet(
+            modData.floors[0]
+          );
+          // Convert ceilings AREA into a worksheet
+          const ceilingAreaWorksheet = XLSX.utils.json_to_sheet(
+            modData.ceilings[0]
+          );
+          // Convert ceilings AREA into a worksheet
+          const ductAreaWorksheet = XLSX.utils.json_to_sheet(
+            Array(modData.quantities.Family, modData.quantities.data)
+          );
+
+          // Add the worksheet to the workbook
+          XLSX.utils.book_append_sheet(
+            workbook,
+            wallAreaWorksheet,
+            "שטחי קירות לפי סוג"
+          );
+          XLSX.utils.book_append_sheet(
+            workbook,
+            wallLengthWorksheet,
+            "אורכי קירות לפי סוג"
+          );
+          XLSX.utils.book_append_sheet(
+            workbook,
+            floorAreaWorksheet,
+            "שטחי רצפות לפי סוג"
+          );
+          XLSX.utils.book_append_sheet(
+            workbook,
+            ceilingAreaWorksheet,
+            "שטחי תקרות לפי סוג"
+          );
+          XLSX.utils.book_append_sheet(
+            workbook,
+            ductAreaWorksheet,
+            "שטחי תעלות מיזוג לפי סוג"
+          );
+
+          // Export the workbook as an Excel file
+          XLSX.writeFile(workbook, "chart_data.xlsx");
+        });
+
+        let isResizing = false;
+        //user pressed on the edge of the sliding window to resize the window
         resizer.addEventListener("mousedown", () => {
           if (!isSmallScreen()) {
             isResizing = true;
@@ -223,6 +283,13 @@
           }
         });
 
+        // User pressed on the edge of the sliding window (mobile touch)
+        resizer.addEventListener("touchstart", (e) => {
+          isResizing = true;
+          document.body.style.cursor = "ew-resize";
+          e.preventDefault(); // Prevent default touch behavior
+        });
+        //user is holding the edge of the window and moving the cursure to change it size
         document.addEventListener("mousemove", (e) => {
           if (!isResizing || isSmallScreen()) return;
 
@@ -235,6 +302,20 @@
           }
         });
 
+        // User is holding the edge of the window and moving the cursor/finger to change its size (mobile)
+        document.addEventListener("touchmove", (e) => {
+          if (!isResizing) return;
+
+          const touch = e.touches[0];
+          const newWidth = window.innerWidth - touch.clientX;
+          if (newWidth > 200 && newWidth < window.innerWidth - 50) {
+            slidingPanel.style.width = `${newWidth}px`;
+            slidingPanel.style.right = "0";
+            // Adjust the width of the child columns proportionally
+            adjustColumnSizes(newWidth);
+          }
+        });
+        //user left the sliding window.
         document.addEventListener("mouseup", () => {
           if (isResizing) {
             isResizing = false;
@@ -243,23 +324,41 @@
           // Trigger resize event for charts or canvases to re-render
           window.dispatchEvent(new Event("resize"));
         });
-
+        // User released the sliding window (mobile)
+        document.addEventListener("touchend", () => {
+          if (isResizing) {
+            isResizing = false;
+            document.body.style.cursor = "default";
+          }
+          // Trigger resize event for charts or canvases to re-render
+          window.dispatchEvent(new Event("resize"));
+        });
         // Function to adjust column sizes based on the panel width
         function adjustColumnSizes(panelWidth) {
           const columnWidth = panelWidth / 2 - 20; // Adjust for padding/margins
 
           col01.style.width = `${columnWidth}px`;
           col02.style.width = `${columnWidth}px`;
+          col03.style.width = `${columnWidth}px`;
+          col04.style.width = `${columnWidth}px`;
 
           // Update the canvases size if needed
           const canvas01 = col01.querySelector("position01");
-          const canvas02 = col02.querySelector("position03");
+          const canvas02 = col01.querySelector("position02");
+          const canvas03 = col02.querySelector("position03");
+          const canvas04 = col02.querySelector("position04");
 
           if (canvas01) {
             canvas01.width = columnWidth;
           }
           if (canvas02) {
             canvas02.width = columnWidth;
+          }
+          if (canvas03) {
+            canvas03.width = columnWidth;
+          }
+          if (canvas04) {
+            canvas04.width = columnWidth;
           }
         }
 

@@ -61,6 +61,10 @@ function launchViewer(urn, viewableId) {
     });
   }
   function onGeometryLoaded() {
+    const openPannelBtn = document.getElementById("openPanelBtn");
+
+    // Make the button visible by removing the 'hidden' attribute
+    openPanelBtn.hidden = false;
     //  a fix for the bug that makes the dashboards disapear when switching models or phases--->04.03.23
     if (document.getElementById("maindashcontainer") != undefined) {
       var maindashcontainer = document.getElementById("maindashcontainer");
