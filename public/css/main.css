@@ -1,58 +1,54 @@
-html, body {
-    min-height: 100%;
-    height: 100%;
-    
-  }
+html,
+body {
+  min-height: 100%;
+  height: 100%;
+}
 
-  .fill {
-    height: calc(100vh - 100px); /* what was before: height: calc(100vh - 100px); */
-    
-    
-    
-  }
+.fill {
+  height: calc(
+    100vh - 100px
+  ); /* what was before: height: calc(100vh - 100px); */
+}
 
-  body {
-    padding-top: 60px; /* space for the top nav bar */
-    /* margin-right: 30px; */
-    
-  }
+body {
+  padding-top: 60px; /* space for the top nav bar */
+  /* margin-right: 30px; */
+}
 
-  #userHubs {
-    overflow:scroll;
-    width: auto;
- /* what was before: height: calc(100vh - 150px); */
-    max-height: calc(100vh - 320px);
-    
-  }
-  .col-sm-4.fill{
-    width:20%;
-  }
-  .ToolBar.ControlGroup{
+#userHubs {
+  overflow: scroll;
+  width: auto;
+  /* what was before: height: calc(100vh - 150px); */
+  max-height: calc(100vh - 320px);
+}
+.col-sm-4.fill {
+  width: 20%;
+}
+.ToolBar.ControlGroup {
   visibility: hidden;
 }
 
-  #forgeViewer {
-    width:fit-content;
-    /* what was before: no height value here. */
-    height: auto;
-
-  }
- /* -------------------------------------------------------------------------- */
-.orbit-gizmo.noselect{
+#forgeViewer {
+  width: fit-content;
+  /* what was before: no height value here. */
+  height: auto;
+}
+/* -------------------------------------------------------------------------- */
+.orbit-gizmo.noselect {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
 }
-.maindashcontainer{
+.maindashcontainer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 100%;
 }
- /* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
 
 /* 26.10.22 ---- new css for modal */
 
@@ -68,8 +64,6 @@ html, body {
   --shadow: rgba(0, 0, 0, 0.1);
   --space: 1rem;
 }
-
-
 
 /* 
 .adsk-viewing-viewer #modelTools,
@@ -89,7 +83,6 @@ html, body {
 .info-wrapper img {
   width: 3rem;
 } */
-
 
 /* .modal-content {
   border-radius: 1rem;
@@ -168,11 +161,10 @@ html, body {
 .rowfill {
   height: 60%;
   width: 100%;
-  display: flex; /* this row makes the two graphs be at the same level*/ 
-
+  display: flex; /* this row makes the two graphs be at the same level*/
 }
 /* טקסט בתוך גרף עיגול */
-.doughnut-text{
+.doughnut-text {
   display: flex;
   align-items: center;
   height: 50px;
@@ -186,7 +178,7 @@ html, body {
   display: flex;
   width: 100%;
 }
-.dataTables_scrollHead{
+.dataTables_scrollHead {
   height: 50px;
   width: 120%;
 }
@@ -197,57 +189,52 @@ html, body {
   /* width: 100% !important; */
   outline: auto;
 }
-.select-prop{
-  float:right;
+.select-prop {
+  float: right;
   margin-right: 12px;
   margin-top: 35px;
   height: 20px;
-  width:20%;
+  width: 20%;
   /* display: flex;
   align-items: right; */
-
 }
-.select-flow{
-  float:right;
+.select-flow {
+  float: right;
   margin-right: 12px;
   margin-top: 35px;
   height: 20px;
-  width:20%;
+  width: 20%;
   /* display: flex;
   align-items: right; */
-
 }
-.select-area{
-  float:left;
+.select-area {
+  float: left;
   margin-left: 24px;
   margin-top: 35px;
   height: 20px;
-  width:20%;
+  width: 20%;
   /* display: flex;
   align-items: right; */
-
 }
-.select{
-  float:left;
+.select {
+  float: left;
   margin-left: 12px;
   margin-top: 35px;
   height: 20px;
-  width:15%;
+  width: 15%;
   /* display: flex;
   align-items: right; */
-
 }
 /* עמודה של 2 גרפים תחתונים */
 .collfill {
   height: 100%;
-  flex: 50%; /* this row makes the two graphs be at the same level*/ 
+  flex: 50%; /* this row makes the two graphs be at the same level*/
   padding-top: 5%;
   padding-bottom: 5%;
-
 }
 
 .canvasfill:hover {
-    transform: scale(1.1);
+  transform: scale(1.1);
 }
 
 /* adjusting size of canvases in small screens ----------05.03.23 */
@@ -258,7 +245,7 @@ html, body {
   box-sizing: border-box;
 }
 
-@media only screen and (max-width: 800px) {
+@media only screen and (max-width: 1000px) {
   .canvasfill {
     max-height: none;
     height: 200px; /* adjust as needed */
@@ -266,38 +253,36 @@ html, body {
 }
 /* adjusting size of canvases in small screens ----------05.03.23 */
 
-
-
-/* @media only screen and (max-width:800px) {
-  .canvasfill{
-    height: 100%!important; 
+/* @media only screen and (max-width: 800px) {
+  .canvasfill {
+    height: 100% !important;
     padding-right: 0vw;
     padding-left: 0vw;
   }
 }
-@media only screen and (max-width:1600px) {
-  .canvasfill{
-    height: 100%!important; 
+@media only screen and (max-width: 1600px) {
+  .canvasfill {
+    height: 100% !important;
     padding-right: 6vw;
     padding-left: 6vw;
   }
 }
 
-@media only screen and (max-width:1200px) {
-  .canvasfill{
-    height: 100%!important; 
+@media only screen and (max-width: 1200px) {
+  .canvasfill {
+    height: 100% !important;
     padding-right: 2vw;
     padding-left: 2vw;
   }
 }
 
-@media only screen and (max-width:1074px) {
-  .canvasfill{
-    height: 100%!important; 
+@media only screen and (max-width: 1074px) {
+  .canvasfill {
+    height: 100% !important;
     padding-right: 0vw;
     padding-left: 0vw;
   }
-} 
+}
 @media only screen and (max-width: 1600px) {
   .collfill {
     height: 50%;
@@ -392,3 +377,85 @@ html, body {
   transform: translateY(var(--border-size));
 }
 
+/* -------------------- */
+/* Sliding Panel styles */
+.sliding-panel {
+  position: fixed;
+  top: 0;
+  right: -600px; /* Initially hidden off-screen */
+  width: 600px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.5);
+  transition: right 0.3s ease; /* Smooth transition */
+  z-index: 1000; /* Ensure it is above other content */
+  overflow-y: auto; /* Allow scrolling if content is too long */
+}
+
+.sliding-panel-content {
+  padding: 20px;
+}
+
+.open-panel-btn {
+  position: fixed;
+  top: 3px;
+  right: 20px;
+  z-index: 1100; /* Above the panel to remain clickable */
+  background-color: #08785d; /* Bright orange color */
+  color: white;
+  font-weight: bold;
+  padding: 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.col01,
+.col02 {
+  flex: 1; /* Columns take equal width */
+  padding: 10px;
+  display: flex; /* Flexbox for content alignment */
+  justify-content: center;
+  align-items: center;
+}
+.position01,
+.position03 {
+  width: 100%; /* Canvas scales with column */
+  height: auto; /* Maintain aspect ratio */
+}
+
+.open-panel-btn:hover {
+  background-color: #ff5722; /* Slightly darker shade for hover effect */
+}
+
+.close-btn {
+  background-color: #004434;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+}
+
+.close-btn:hover {
+  background-color: #005944;
+}
+
+.resizer {
+  width: 10px;
+  height: 100%;
+  background: #ccc;
+  cursor: ew-resize;
+  position: absolute;
+  top: 0;
+  left: -5px;
+  z-index: 1001; /* Above the panel */
+}
+
+/* ------------- */

@@ -64,7 +64,9 @@ function launchViewer(urn, viewableId) {
     //  a fix for the bug that makes the dashboards disapear when switching models or phases--->04.03.23
     if (document.getElementById("maindashcontainer") != undefined) {
       var maindashcontainer = document.getElementById("maindashcontainer");
-      document.getElementById("main-container").removeChild(maindashcontainer);
+      document
+        .querySelector(".sliding-panel-content")
+        .removeChild(maindashcontainer);
       modData = {};
     }
     //  a fix for the bug that makes the dashboards disapear when switching models or phases--->04.03.23
@@ -152,6 +154,130 @@ function launchViewer(urn, viewableId) {
       null,
       ["Comments"]
     );
+    //=============> on hover tooltip 18.09.24
+    let selectedDbId = null; // To store the selected element's dbId
+
+    // Event listener for selection change
+    viewer.addEventListener(
+      Autodesk.Viewing.SELECTION_CHANGED_EVENT,
+      (event) => {
+        const selection = event.dbIdArray;
+        if (selection.length > 0) {
+          selectedDbId = selection[0]; // Store the selected element's dbId
+        } else {
+          selectedDbId = null; // No element is selected
+          hideTooltip(); // Hide the tooltip if no selection
+        }
+      }
+    );
+    // Add hover event listener
+    viewer.impl.canvas.addEventListener("mousemove", (event) => {
+      // Get the screen coordinates from the mouse event
+      const screenPoint = { x: event.clientX, y: event.clientY };
+
+      // Normalize the screen coordinates for hit test
+      const normalized = normalize(screenPoint);
+
+      // Perform the hit test with normalized coordinates
+      const hitTest = getHitDbId(normalized.x, normalized.y);
+
+      if (hitTest && hitTest === selectedDbId) {
+        // Get properties of the hovered element
+        viewer.getProperties(hitTest, (props) => {
+          const properties = props.properties;
+
+          // Create a tooltip or floating div to display the properties
+          showTooltip(event.clientX, event.clientY, properties);
+        });
+      } else {
+        // Hide tooltip when not hovering over an object
+        hideTooltip();
+      }
+    });
+
+    // Function to normalize the screen coordinates
+    function normalize(screenPoint) {
+      const viewport = viewer.navigation.getScreenViewport();
+      return {
+        x: (screenPoint.x - viewport.left) / viewport.width,
+        y: (screenPoint.y - viewport.top) / viewport.height,
+      };
+    }
+
+    // Modified version of getHitPoint that returns dbId
+    function getHitDbId(x, y) {
+      // Convert normalized coordinates to the range used by hitTestViewport
+      y = 1.0 - y;
+      x = x * 2.0 - 1.0;
+      y = y * 2.0 - 1.0;
+
+      // Create a vector for hit test
+      const vpVec = new THREE.Vector3(x, y, 1);
+
+      // Perform the hit test and return the dbId if there's a hit
+      const result = viewer.impl.hitTestViewport(vpVec, false);
+      return result ? result.dbId : null;
+    }
+
+    // Function to show tooltip with properties
+    function showTooltip(x, y, properties) {
+      const tooltip = document.getElementById("tooltip");
+      // Get tooltip dimensions
+      const tooltipWidth = tooltip.offsetWidth;
+      const tooltipHeight = tooltip.offsetHeight;
+
+      // Adjust the position so the right bottom corner is close to the cursor
+      tooltip.style.left = `${x - tooltipWidth}px`; // Position left
+      tooltip.style.top = `${y - tooltipHeight}px`; // Position above
+
+      tooltip.style.display = "block";
+
+      const allowedProperties = [
+        "Name",
+        "Category",
+        "Width",
+        "Height",
+        "Area",
+        "Comments",
+        "Type Name",
+        "Type Mark",
+        "Type Comments",
+        "Length",
+        "Description",
+        "Material",
+        "Level",
+        "Reference Level",
+        "Ref Level",
+        "Base Constraints",
+        "Tidhar Space",
+        "Size",
+        "Workset",
+        "System Type",
+        "System Name",
+        "System Classification",
+        "Thickness",
+      ];
+      const filteredProperties = properties.filter((prop) =>
+        allowedProperties.includes(prop.displayName)
+      );
+      filteredProperties.sort();
+
+      // Format properties into HTML for the tooltip
+      let content = "";
+      filteredProperties.forEach((prop) => {
+        content += `<strong>${prop.displayName}</strong>: ${prop.displayValue}<br>`;
+      });
+
+      tooltip.innerHTML = content;
+    }
+
+    // Function to hide tooltip
+    function hideTooltip() {
+      const tooltip = document.getElementById("tooltip");
+      tooltip.style.display = "none";
+    }
+
+    //=============> on hover tooltip 18.09.24
 
     DashBoardColors = generateColorsRandom();
   }
