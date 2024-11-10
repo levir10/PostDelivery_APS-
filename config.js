@@ -9,7 +9,8 @@ module.exports = {
     client_id: "oPAPyw9PAsnCZQxxNnttEDdTSRuUVvXJ",
     client_secret: "ELtkpw4c1uvNiBB8",
     // callback_url: "http://localhost:443/api/forge/callback/oauth",
-    callback_url: "https://postdelivery-aps-2.onrender.com",
+    callback_url:
+      "https://postdelivery-aps-2.onrender.com/api/forge/callback/oauth",
   },
   scopes: {
     // Required scopes for the server-side application-->privliges for our internal opperation in the server side ("back end")
